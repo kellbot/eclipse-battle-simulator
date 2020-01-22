@@ -9,11 +9,15 @@ var ship_parts;
     //populate parts
     ship_parts = token_data.parts;
  //   populate default ships
-    for (let [className, ship] of Object.entries(attackShips)){
-      shipDefaults = token_data.ships[className];
-      ship.slots = shipDefaults.slots;
-      ship.baseInitiative = shipDefaults.initiative;
-      ship.updateStats();
+    let fleets = [attackShips, defenseShips];
+    fleets.forEach(prepareDefaults);
+    function prepareDefaults(fleet){
+      for (let [className, ship] of Object.entries(fleet)){
+        shipDefaults = token_data.ships[className];
+        ship.slots = shipDefaults.slots;
+        ship.baseInitiative = shipDefaults.initiative;
+        ship.updateStats();
+      }
     }
 
 
@@ -22,17 +26,31 @@ var ship_parts;
   	$('.fleet-select input').change(function(){
         let shipClass = $(this).parent().parent().data('blueprint');
         let player = $(this).parent().parent().data('player');
-        //calculate the ship's values
-        var ship = attackShips[shipClass];
 
         var blueprintImg = $('#' + player + shipClass);
-            var qty = $(this).val();
-            if (qty >= 1){
-              blueprintImg.show();
-            } else {
-              blueprintImg.hide();
-            }
-            blueprintImg.children('.pipbox').html(qty);
+        var qty = $(this).val();
+        if (qty >= 1){
+          blueprintImg.show();
+        } else {
+          blueprintImg.hide();
+        }
+        blueprintImg.children('.pipbox').html(qty);
+
+
+    });
+
+    $('.blueprintmodal').on('show.bs.modal', function(event){
+      var fleet;
+      var button = $(event.relatedTarget); //ship thumbnail that triggered the modal
+      var player = button.data('player');
+      if (player == 'attack'){
+        fleet = attackShips;
+      } else {
+        fleet = defenseShips;
+      }
+      var ship = fleet[$(this).data('blueprint')];
+      console.log(ship);
+
     });
 
   $('.dropdown-submenu a.test').on("click", function(e){
@@ -44,7 +62,7 @@ var ship_parts;
          //a new ship part is selected
          $('.partselect .singlepart' ).on("click", function(e){
             var slot = $(this).data('slot');
-            var part = token_data.parts[$(this).data('id')];
+            var part = ship_parts[$(this).data('id')];
             $('#' + slot + ' button').html(part.name);
   });
 
@@ -138,5 +156,5 @@ class Blueprint {
 
 
 let attackShips = { "interceptor": new Blueprint('interceptor'), "cruiser" : new Blueprint('cruiser'), "dreadnought" : new Blueprint('dreadnought')};
-let defenseShips = { "interceptor": new Blueprint('interceptor'), "cruiser" : new Blueprint('cruiser'), "dreadnought" : new Blueprint('starbase')};
+let defenseShips = { "interceptor": new Blueprint('interceptor'), "cruiser" : new Blueprint('cruiser'), "dreadnought" : new Blueprint('dreadnought'), "starbase" : new Blueprint('starbase')};
 

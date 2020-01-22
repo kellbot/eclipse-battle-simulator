@@ -129,7 +129,7 @@ foreach ($players as $player) {
           <div class="row">
 <?php       foreach($blueprints as $class => $blueprint) {  ?>
             <div id="<?php echo $player . $class; ?>" class="ship collapse col-6">
-              <img class="img-fluid" src="images/<?php echo $class;?>.jpg"  data-toggle="modal" data-target="#<?php echo $class;?>Modal" />
+              <img class="img-fluid" src="images/<?php echo $class;?>.jpg"  data-toggle="modal" data-target="#<?php echo $class;?>Modal" data-player="<?php echo $player; ?>" />
               <div class="pipbox"></div>
             </div>
 <?php       } ?>                    
@@ -144,7 +144,7 @@ foreach ($blueprints as $class => $ship) { ?>
 
 <!-- Modal -->
 <div class="containter">
-<div class="modal fade" id="<?php echo $class; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="<?php echo $class; ?>ModalLabel1" aria-hidden="true">
+<div class="modal fade blueprintmodal" id="<?php echo $class; ?>Modal" data-blueprint="<?php echo $class; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $class; ?>ModalLabel1" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
