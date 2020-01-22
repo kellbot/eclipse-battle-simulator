@@ -38,3 +38,64 @@
 .fleet-nav li {
     padding: 2px;
 }
+
+.pip{
+  height: 30px;
+  min-width: 30px;
+  display: inline-block;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 7px  ;
+}
+
+.die1 {
+  background-color: #ffcc00;
+}
+.die2 {
+  background-color: #ff9900;
+}
+.die4 {
+  background-color: #ff0000;
+}
+
+.dmgup {
+  border: 1px solid black;
+}
+.defup {
+  color: #fff;
+  background-color: #444444;
+}
+.hull {
+  background-color: #009933;
+}
+.initiative {
+  background-color: #33ccff;
+}
+.missile {
+  color: #ff9900;
+}
+
+.diagram{
+  display: inline-block;
+  position: relative;
+}
+
+.shipmodal .slot {
+  position: absolute;
+    width: 33%;
+    height: 50%;
+}
+.interceptor .slot0{
+  margin-top: 26%;
+}
+.interceptor .slot1{
+  left: 33%;
+}
+.interceptor .slot2{
+  left: 33%;
+  top: 50%;
+}
+.interceptor .slot3{
+  left: 66%;
+  top: 36%;
+}

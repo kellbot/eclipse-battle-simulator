@@ -94,8 +94,6 @@ foreach ($players as $player) {
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?php echo $player; ?>Fleet" aria-controls="<?php echo $player; ?>Fleet" aria-expanded="false" aria-label="Edit <?php echo $player; ?> fleet">
                 Edit Fleet
             </button>
-            <button class="btn-secondary btn" type="button"><i class="fa fa-user-astronaut"></i></button>
-    
             <div class="collapse navbar-collapse text-left" id="<?php echo $player; ?>Fleet">
               <ul class="navbar-nav mr-auto">
 
@@ -144,7 +142,7 @@ foreach ($blueprints as $class => $ship) { ?>
 
 <!-- Modal -->
 <div class="containter">
-<div class="modal fade blueprintmodal" id="<?php echo $class; ?>Modal" data-blueprint="<?php echo $class; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $class; ?>ModalLabel1" aria-hidden="true">
+<div class="modal fade blueprintmodal" id="<?php echo $class; ?>Modal" data-blueprint="<?php echo $class; ?>" data-player="" tabindex="-1" role="dialog" aria-labelledby="<?php echo $class; ?>ModalLabel1" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -153,8 +151,13 @@ foreach ($blueprints as $class => $ship) { ?>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <img class="img-fluid" src="images/<?php echo $class; ?>.jpg"  data-toggle="modal" data-target="#<?php echo $class; ?>Modal" />
+      <div class="modal-body shipmodal <?php echo $class; ?>">
+        <div class="diagram">
+<?php   for ($i=0; $i < sizeof($ship->slots); $i++) { ?>
+          <div class="slot slot<?php echo $i; ?>"></div>
+<?php   }   ?>
+          <img class="img-fluid" src="images/<?php echo $class; ?>.jpg"  data-toggle="modal" data-target="#<?php echo $class; ?>Modal" />
+        </div>
       </div>
 
 <?php
@@ -180,7 +183,7 @@ foreach ($blueprints as $class => $ship) { ?>
             <a class="test" tabindex="-1" href="#"><?php echo $type; ?> <i class="fa fa-caret-right"></i></a>
             <ul class="dropdown-menu">
 <?php       foreach ($parts as $part) { ?>
-              <li><a class="singlepart" tabindex="-1" href="#" data-slot="<?php echo $class.$number; ?>" data-id="<?php echo $part->id; ?>"><?php echo $part->name; ?></a></li>
+              <li><a class="singlepart" tabindex="-1" href="#" data-slotindex="<?php echo $number; ?>" data-id="<?php echo $part->id; ?>"><?php echo $part->name; ?></a></li>
 <?php       } ?>
             </ul>
           </li>
