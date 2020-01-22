@@ -106,7 +106,7 @@ foreach ($players as $player) {
                 ?>
                 <li class="nav-item active fleet-select">
                   <?php echo $class; ?>s
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons" data-blueprint="<?php echo $player; ?><?php echo ucfirst($class); ?>">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons" data-player="<?php echo $player; ?>" data-blueprint="<?php echo $class; ?>">
                     <label class="btn btn-secondary active">
                       <input type="radio" name="<?php echo $player; ?><?php echo $class; ?>Qty" value="0" id="<?php echo $player; ?><?php echo $class; ?>0" checked>None
                     </label>
@@ -127,34 +127,13 @@ foreach ($players as $player) {
           </nav>
 
           <div class="row">
-            <div id="<?php echo $player; ?>Interceptor" class="ship collapse col-6">
-              <img class="img-fluid" src="images/interceptor.jpg"  data-toggle="modal" data-target="#interceptorModal" />
+<?php       foreach($blueprints as $class => $blueprint) {  ?>
+            <div id="<?php echo $player . $class; ?>" class="ship collapse col-6">
+              <img class="img-fluid" src="images/<?php echo $class;?>.jpg"  data-toggle="modal" data-target="#<?php echo $class;?>Modal" />
               <div class="pipbox"></div>
-                
             </div>
-            <div id="<?php echo $player; ?>Cruiser" class="ship collapse col-6">
-              <img class="img-fluid" src="images/cruiser.jpg" data-toggle="modal" data-target="#cruiserModal"/>
-              <div class="pipbox"></div>
-              
-            </div>
-            <div id="<?php echo $player; ?>Dreadnought" class="ship collapse col-6">
-              <img class="img-fluid" src="images/dreadnought.jpg" data-toggle="modal" data-target="#dreadnoughtModal" />
-              <div class="row bg-info">
-                <div class="pipbox"></div>
-
-                
-              </div>
-            </div>
-            <div id="<?php echo $player; ?>Starbase" class="ship collapse col-6">
-              <img class="img-fluid" src="images/starbase.jpg" data-toggle="modal" data-target="#starbaseModal"/>
-              <div class="row bg-info">
-                <div class="pipbox"></div>
-
-                
-              </div>
-            </div>
+<?php       } ?>                    
           </div>
-
         </div>
       </div>
 <?php } ?>
@@ -201,7 +180,7 @@ foreach ($blueprints as $class => $ship) { ?>
             <a class="test" tabindex="-1" href="#"><?php echo $type; ?> <i class="fa fa-caret-right"></i></a>
             <ul class="dropdown-menu">
 <?php       foreach ($parts as $part) { ?>
-              <li><a class="singlepart" tabindex="-1" href="#" data-slot="<?php echo $class.$number; ?>" data-name="<?php echo $part->name; ?>"><?php echo $part->name; ?></a></li>
+              <li><a class="singlepart" tabindex="-1" href="#" data-slot="<?php echo $class.$number; ?>" data-id="<?php echo $part->id; ?>"><?php echo $part->name; ?></a></li>
 <?php       } ?>
             </ul>
           </li>
