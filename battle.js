@@ -1,15 +1,21 @@
 var token_data; 
+var ship_parts;
  $(document).ready(function(){
 
 
   $.getJSON( "tokens.json", function( data ) {
 		token_data = data;
 
+    //populate parts
+    ship_parts = token_data.parts;
  //   populate default ships
-    for (let [key, value] of Object.entries(attackShips)){
-     value.slots = token_data.ships[key].slots;
-      console.log(value);
+    for (let [className, ship] of Object.entries(attackShips)){
+      shipDefaults = token_data.ships[className];
+      ship.slots = shipDefaults.slots;
+      ship.baseInitiative = shipDefaults.initiative;
+      ship.updateStats();
     }
+
 
 	});
 
@@ -18,7 +24,6 @@ var token_data;
         let player = $(this).parent().parent().data('player');
         //calculate the ship's values
         var ship = attackShips[shipClass];
-        console.log(ship.slots);
 
         var blueprintImg = $('#' + player + shipClass);
             var qty = $(this).val();
@@ -40,7 +45,6 @@ var token_data;
          $('.partselect .singlepart' ).on("click", function(e){
             var slot = $(this).data('slot');
             var part = token_data.parts[$(this).data('id')];
-            console.log(part);
             $('#' + slot + ' button').html(part.name);
   });
 
@@ -51,19 +55,82 @@ var token_data;
 class Blueprint {
   constructor(className, classDefaults) {
     this.name = className;
-    this.hull = 5;
+    this.hull = 0;
+    this.missile = 0;
+    this.baseInitiative = 0;
+    this.initiative = this.baseInitiative;
+    this.missile = 0;
+    this.cannons = {};
+    this.computer = 0;
+    this.shield = 0;
   }
 
-  get hullStrength() {
-    return this.calcHull();
+  getParts(type) {
+    let current_hulls = this.slots.filter(function(part) {
+      if (part !== null) return part.includes(type);
+    });
+
+    if (current_hulls !== null) {
+      return current_hulls
+    } else {
+      return 0;
+    }
+  }
+
+  calcBasic(type) {
+    let current_parts = this.getParts(type);
+    let partsValue = 0;
+    let i = 0;
+    while ( i < current_parts.length){
+       let part = ship_parts[current_parts[i]]
+       partsValue += part.value;
+       i++;
+    }
+    return partsValue
   }
 
   calcHull() {
-    return this.hull;
+    return this.calcBasic('hull');
   }
 
-  setParts(slots){
-    this.slots = slots;
+  calcInitiative() {
+    let drives = this.getParts('drive');
+    let initiativeValue = this.baseInitiative;
+    let i = 0;
+    while ( i < drives.length){
+       let part = ship_parts[drives[i]]
+       initiativeValue += part.initiative;
+       i++;
+    }
+    return initiativeValue;
+  }
+
+  calcCannons(){
+    let cannons = this.getParts('cannon');
+    let cannonValues = [];
+    let i = 0;
+    while ( i < cannons.length){
+       let part = ship_parts[cannons[i]];
+       cannonValues.push(part.value);
+       i++;
+    }
+    return cannonValues;
+  }
+
+  calcComputer() {
+    return this.calcBasic('comp');
+  }
+
+  calcShield() {
+    return -1 * this.calcBasic('shield');
+  }
+
+  updateStats() {
+    this.hull = this.calcHull();
+    this.initiative = this.calcInitiative();
+    this.cannons = this.calcCannons();
+    this.computer = this.calcComputer();
+    this.shield = this.calcShield();
   }
 
 }
